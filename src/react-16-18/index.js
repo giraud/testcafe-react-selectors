@@ -92,8 +92,14 @@ function react16to18Selector (selector, renderedRootIsUnknown, parents = rootEls
 
         let currentChild = component.child;
 
-        if (typeof component.type !== 'string')
-            currentChild = component.child;
+        // if (typeof component.type !== 'string')
+        //     currentChild = component.child;  <-  why ?
+
+        if (currentChild.flags === 8/*ContentReset*/) {
+            const alternateChild = component.alternate && component.alternate.child;
+
+            if (alternateChild) currentChild = alternateChild;
+        }
 
         const children = [currentChild];
 
